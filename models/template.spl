@@ -1,6 +1,6 @@
 use std.database.{DbCodec, DbValue, DbRow, TableSchema, Column, ColumnType, Database}
 use std.web_framework.model.{ActiveModel, Repository}
-use std.web_framework.validation.{Validator, Required, MinLength, MaxLength}
+use std.web_framework.form_validation.{Validator, Required, MinLength, MaxLength}
 
 class RestaurantTemplate:
     id: i64

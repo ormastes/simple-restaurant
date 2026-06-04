@@ -1,6 +1,6 @@
 use std.database.{DbCodec, DbValue, DbRow, TableSchema, Column, ColumnType, Database}
 use std.web_framework.model.{Repository}
-use std.time.{now_iso8601}
+use utils.{now_iso8601}
 
 class Payment:
     id: i64

@@ -1,6 +1,4 @@
-use std.web_framework.controller.{ControllerContext, HttpResponseData, ViewData}
-use std.web_framework.template.{render_page}
-use std.web_framework.response.{render_error}
+use std.web_framework.controller.{ControllerContext, HttpResponseData, ViewData, render_page, render_error}
 use std.database.{DbValue}
 
 use models.template.{
