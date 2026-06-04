@@ -3,7 +3,7 @@ use std.web_framework.session.{session_get}
 use std.web_framework.flash.{flash_add}
 use std.web_framework.csrf_integration.{csrf_token_for_session, verify_csrf_token}
 use std.database.{DbValue}
-use utils.{now_iso8601}
+use std.nogc_sync_mut.io.time_ops.{time_now_unix_micros}
 
 use models.order.{
     Order, create_order_repository,
@@ -81,7 +81,7 @@ fn action_update(ctx: ControllerContext) -> HttpResponseData:
         payment_status: order.payment_status,
         notes: if notes == "": order.notes else: notes,
         created_at: order.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     repo.update(updated)?
 
@@ -111,7 +111,7 @@ fn action_send_to_cook(ctx: ControllerContext) -> HttpResponseData:
         payment_status: order.payment_status,
         notes: order.notes,
         created_at: order.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     repo.update(updated)?
 
@@ -138,7 +138,7 @@ fn action_create(ctx: ControllerContext) -> HttpResponseData:
     val tax = subtotal * 10 / 100
     val total = subtotal + tax
 
-    val now = now_iso8601()
+    val now = "{time_now_unix_micros()}"
     val repo = create_order_repository(ctx.db())
     val order = Order(
         id: 0,

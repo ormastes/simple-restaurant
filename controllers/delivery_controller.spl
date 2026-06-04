@@ -3,7 +3,7 @@ use std.web_framework.session.{session_get}
 use std.web_framework.flash.{flash_add}
 use std.web_framework.csrf_integration.{csrf_token_for_session, verify_csrf_token}
 use std.web_framework.form_validation.{Validator, Required, MinLength}
-use utils.{now_iso8601}
+use std.nogc_sync_mut.io.time_ops.{time_now_unix_micros}
 
 use models.order.{Order, create_order_repository, find_order_by_id}
 use models.delivery.{
@@ -49,7 +49,7 @@ fn action_request_delivery(ctx: ControllerContext) -> HttpResponseData:
     val address = ctx.form_value("address")
     val notes = ctx.form_value("delivery_notes")
 
-    val now = now_iso8601()
+    val now = "{time_now_unix_micros()}"
     val drepo = create_delivery_repository(ctx.db())
     val delivery = DeliveryRequest(
         id: 0,
@@ -110,7 +110,7 @@ fn action_update_status(ctx: ControllerContext) -> HttpResponseData:
         status: if new_status == "": delivery.status else: new_status,
         estimated_time: if estimated_time == "": delivery.estimated_time else: estimated_time,
         created_at: delivery.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     drepo.update(updated)?
 

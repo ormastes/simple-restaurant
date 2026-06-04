@@ -2,7 +2,7 @@ use std.web_framework.controller.{ControllerContext, HttpResponseData, ViewData,
 use std.web_framework.session.{session_get}
 use std.web_framework.flash.{flash_add}
 use std.web_framework.csrf_integration.{csrf_token_for_session, verify_csrf_token}
-use utils.{now_iso8601}
+use std.nogc_sync_mut.io.time_ops.{time_now_unix_micros}
 
 use models.order.{Order, create_order_repository, find_order_by_id}
 use models.payment.{
@@ -74,7 +74,7 @@ fn action_desk_pay(ctx: ControllerContext) -> HttpResponseData:
         card_last_four: last_four,
         transaction_id: txn_id,
         gateway_response: "approved",
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     prepo.save(payment)?
 
@@ -90,7 +90,7 @@ fn action_desk_pay(ctx: ControllerContext) -> HttpResponseData:
         payment_status: "paid",
         notes: order.notes,
         created_at: order.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     orepo.update(updated_order)?
 
@@ -153,7 +153,7 @@ fn action_gate_pay(ctx: ControllerContext) -> HttpResponseData:
         card_last_four: last_four,
         transaction_id: txn_id,
         gateway_response: "approved",
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     prepo.save(payment)?
 
@@ -169,7 +169,7 @@ fn action_gate_pay(ctx: ControllerContext) -> HttpResponseData:
         payment_status: "paid",
         notes: order.notes,
         created_at: order.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     orepo.update(updated_order)?
 
@@ -231,7 +231,7 @@ fn action_store_checkout(ctx: ControllerContext) -> HttpResponseData:
         card_last_four: last_four,
         transaction_id: txn_id,
         gateway_response: "approved",
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     prepo.save(payment)?
 
@@ -247,7 +247,7 @@ fn action_store_checkout(ctx: ControllerContext) -> HttpResponseData:
         payment_status: "paid",
         notes: order.notes,
         created_at: order.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     orepo.update(updated_order)?
 

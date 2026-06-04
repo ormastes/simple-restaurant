@@ -4,7 +4,7 @@ use std.web_framework.flash.{flash_add}
 use std.web_framework.csrf_integration.{csrf_token_for_session, verify_csrf_token}
 use std.web_framework.form_validation.{Validator, Required, MinLength}
 use std.database.{DbValue}
-use utils.{now_iso8601}
+use std.nogc_sync_mut.io.time_ops.{time_now_unix_micros}
 
 use models.template.{
     RestaurantTemplate, create_template_repository, template_validator,
@@ -118,7 +118,7 @@ fn action_template_create(ctx: ControllerContext) -> HttpResponseData:
         return render_redirect(ctx, "/admin/templates/new")
 
     val repo = create_template_repository(ctx.db())
-    val now = now_iso8601()
+    val now = "{time_now_unix_micros()}"
     val t = RestaurantTemplate(
         id: 0,
         name: name,
@@ -170,7 +170,7 @@ fn action_template_update(ctx: ControllerContext) -> HttpResponseData:
         template_type: if ttype == "": t.template_type else: ttype,
         is_default: t.is_default,
         created_at: t.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     repo.update(updated)?
 
@@ -229,7 +229,7 @@ fn action_group_create(ctx: ControllerContext) -> HttpResponseData:
         name: name,
         description: description,
         sort_order: sort_order,
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     repo.save(g)?
 
@@ -313,7 +313,7 @@ fn action_item_create(ctx: ControllerContext) -> HttpResponseData:
     val price = ctx.form_value("price").parse_i64().unwrap_or(0)
     val sort_order = ctx.form_value("sort_order").parse_i64().unwrap_or(0)
 
-    val now = now_iso8601()
+    val now = "{time_now_unix_micros()}"
     val repo = create_item_repository(ctx.db())
     val item = MenuItem(
         id: 0,
@@ -379,7 +379,7 @@ fn action_item_update(ctx: ControllerContext) -> HttpResponseData:
         available: available,
         sort_order: item.sort_order,
         created_at: item.created_at,
-        updated_at: now_iso8601()
+        updated_at: "{time_now_unix_micros()}"
     )
     repo.update(updated)?
 
@@ -422,7 +422,7 @@ fn action_condition_create(ctx: ControllerContext) -> HttpResponseData:
         item_id: item_id,
         condition_type: ctype,
         condition_value: cvalue,
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     repo.save(cond)?
 
@@ -465,7 +465,7 @@ fn action_additional_create(ctx: ControllerContext) -> HttpResponseData:
         name: name,
         description: description,
         price: price,
-        created_at: now_iso8601()
+        created_at: "{time_now_unix_micros()}"
     )
     repo.save(a)?
 
