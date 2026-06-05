@@ -1,7 +1,7 @@
 use std.web_framework.app.{WebApp}
 
 fn main():
-    val app = WebApp.new("app.sdn")?
+    val app = WebApp.create("app.sdn")?
 
     app.mount_routes("routes.sdn")?
 
